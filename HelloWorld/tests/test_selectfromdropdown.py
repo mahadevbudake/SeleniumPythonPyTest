@@ -11,30 +11,33 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from HelloWorld.Excel_Read_and_Write import excelReadWrite
+import pytest
+@pytest.mark.usefixtures("init_driver")
+class Base_Test:
+    pass
 
-
-class Test_SelectFromDropDown ():
+class Test_SelectFromDropDown (Base_Test):
 
     def test_SelectFromDD(self):
 
-        driver = webdriver.Chrome()
+        #driver = webdriver.Chrome()
 
-        driver.get("https://www.amazon.com/")
+        self.driver.get("https://www.amazon.com/")
 
-        driver.maximize_window()
+        self.driver.maximize_window()
 
         delay = 10 # seconds
         try:
-            myElem = WebDriverWait(driver, delay).until(EC.presence_of_element_located((By.XPATH, "//span//input[@class='a-button-input' and @data-action-type='DISMISS']"))).click()
+            myElem = WebDriverWait(self.driver, delay).until(EC.presence_of_element_located((By.XPATH, "//span//input[@class='a-button-input' and @data-action-type='DISMISS']"))).click()
             print ("Page is ready!")
         except TimeoutException:
             print ("Loading took too much time!")
 
-        myElem = WebDriverWait(driver, delay).until(EC.presence_of_element_located((By.XPATH, "//div[@class='nav-search-scope nav-sprite']"))).click()
+        myElem = WebDriverWait(self.driver, delay).until(EC.presence_of_element_located((By.XPATH, "//div[@class='nav-search-scope nav-sprite']"))).click()
 
         delay = 10 # seconds
 
-        myElementCheckout = driver.find_element(By.XPATH, "//select[@aria-describedby='searchDropdownDescription']/option[text()='Automotive']").click()
+        myElementCheckout = self.driver.find_element(By.XPATH, "//select[@aria-describedby='searchDropdownDescription']/option[text()='Automotive']").click()
 
         #input("Press ENTER to exit\n")
 

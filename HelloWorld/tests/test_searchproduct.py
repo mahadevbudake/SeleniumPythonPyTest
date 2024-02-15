@@ -13,27 +13,32 @@ from selenium.common import TimeoutException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+import pytest
 
-class Test_SearchProduct:
+@pytest.mark.usefixtures("init_driver")
+class Base_Test:
+    pass
+
+class Test_SearchProduct(Base_Test):
 
     def test_searchProduct(self):
-        driver = webdriver.Chrome()
+        #driver = webdriver.Chrome()
 
-        driver.get("https://www.amazon.com/")
+        self.driver.get("https://www.amazon.com/")
 
-        driver.maximize_window()
+        self.driver.maximize_window()
 
         delay = 10 # seconds
         getLocators = Locators.HomePageLocators()
         try:
             #getLocators = Locators.HomePageLocators()
             print(getLocators.getproductsearchtext())
-            myElem = WebDriverWait(driver, delay).until(EC.presence_of_element_located((By.XPATH, getLocators.getproductsearchtext()))).click()
+            myElem = WebDriverWait(self.driver, delay).until(EC.presence_of_element_located((By.XPATH, getLocators.getproductsearchtext()))).click()
             print ("Page is ready!")
         except TimeoutException:
             print ("Loading took too much time!")
 
-        myElem = WebDriverWait(driver, delay).until(EC.presence_of_element_located((By.XPATH, getLocators.getproductsearch())))
+        myElem = WebDriverWait(self.driver, delay).until(EC.presence_of_element_located((By.XPATH, getLocators.getproductsearch())))
 
         #inputElement = driver.find_element("XPATH","//div//input[@id='twotabsearchtextbox']")
 
@@ -43,7 +48,7 @@ class Test_SearchProduct:
 
         delay = 10 # seconds
 
-        Title = driver.title
+        Title = self.driver.title
 
         print("Printed Title: "+Title)
 
@@ -51,13 +56,13 @@ class Test_SearchProduct:
 
         delay = 5 # seconds
 
-        print(driver.current_url)
+        print(self.driver.current_url)
 
         getCurrentTimeObj = getCurrentTime.GetCurrentTime()
 
         print(getCurrentTimeObj.getcurrenttime())
 
-        driver.get_screenshot_as_file("C://Users//mahadev_budake//Downloads//Screenshots//image"+getCurrentTimeObj.getcurrenttime()+".png")
+        self.driver.get_screenshot_as_file("C://Users//mahadev_budake//Downloads//Screenshots//image"+getCurrentTimeObj.getcurrenttime()+".png")
 
         #input("Press ENTER to exit\n")
 
